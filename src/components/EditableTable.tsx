@@ -23,8 +23,8 @@ export function EditableTable<T extends { id: string }>({
   data, columns, currency = 'USD', onUpdate, onDelete, totalLabel, totalValue
 }: Props<T>) {
   return (
-    <div className="overflow-hidden">
-      <table className="w-full text-sm">
+    <div className="overflow-x-auto -mx-1">
+      <table className="w-full text-sm min-w-[320px]">
         <thead>
           <tr className="border-b border-slate-100">
             {columns.map(col => (

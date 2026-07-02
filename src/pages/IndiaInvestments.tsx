@@ -52,9 +52,9 @@ Analyze the India portfolio: property exposure, gold allocation, liquidity, and 
   }
 
   return (
-    <div className="p-6 space-y-6 max-w-5xl mx-auto">
+    <div className="p-4 md:p-6 space-y-5 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
             <IndianRupee className="w-7 h-7 text-orange-500" /> India Investments
@@ -69,7 +69,7 @@ Analyze the India portfolio: property exposure, gold allocation, liquidity, and 
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: 'Real Estate', value: realEstateTotal, icon: Home, colorBg: 'bg-orange-100', colorIcon: 'text-orange-600' },
           { label: 'Cash & FDs', value: cashTotal, icon: Banknote, colorBg: 'bg-blue-100', colorIcon: 'text-blue-600' },

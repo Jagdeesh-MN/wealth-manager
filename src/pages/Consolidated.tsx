@@ -133,7 +133,7 @@ ${growth !== null ? `Growth since last snapshot: ${growth >= 0 ? '+' : ''}${form
 Provide a comprehensive analysis: geographic diversification, asset allocation vs best practices, currency risk, net worth trajectory, and top 3 actionable recommendations.`;
 
   return (
-    <div className="p-6 space-y-6 max-w-5xl mx-auto">
+    <div className="p-4 md:p-6 space-y-5 max-w-5xl mx-auto">
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-4">
         <div>
@@ -195,7 +195,7 @@ Provide a comprehensive analysis: geographic diversification, asset allocation v
       </div>
 
       {/* US vs India Split */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
           <p className="text-xs text-slate-400 font-medium">🇺🇸 US Portfolio</p>
           <p className="text-2xl font-bold text-blue-600 mt-1">{fmt(convert(totalUSUSD))}</p>
@@ -250,7 +250,7 @@ Provide a comprehensive analysis: geographic diversification, asset allocation v
 
       {/* Liquidity KPI */}
       <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-5 shadow-sm">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-emerald-600" />
             <h3 className="text-sm font-semibold text-emerald-800">Immediate Liquidity (US)</h3>
@@ -258,7 +258,7 @@ Provide a comprehensive analysis: geographic diversification, asset allocation v
           </div>
           <p className="text-2xl font-bold text-emerald-700">{fmt(convert(usLiquidity.total))}</p>
         </div>
-        <div className="grid grid-cols-3 gap-3 mt-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mt-3">
           {[
             { label: 'Cash (liquid)', value: usLiquidity.cashLiquid },
             { label: 'Stocks (after 15% CGT)', value: usLiquidity.stocksAfterTax },
@@ -273,7 +273,7 @@ Provide a comprehensive analysis: geographic diversification, asset allocation v
       </div>
 
       {/* Charts row */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
           <h3 className="text-sm font-semibold text-slate-700 mb-4">Net Worth Trend</h3>
           <TrendChart
@@ -323,7 +323,7 @@ Provide a comprehensive analysis: geographic diversification, asset allocation v
       {/* Monthly Cash Flow Summary */}
       <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
         <h3 className="text-sm font-semibold text-slate-700 mb-4">Monthly Cash Flow</h3>
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: 'Income', value: monthlyIncome, colorBg: 'bg-green-50', colorBorder: 'border-green-100', colorText: 'text-green-600', colorLabel: 'text-green-600', sign: '+' },
             { label: 'Expenses', value: monthlyExpenses, colorBg: 'bg-red-50', colorBorder: 'border-red-100', colorText: 'text-red-600', colorLabel: 'text-red-600', sign: '-' },

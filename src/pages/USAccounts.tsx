@@ -54,9 +54,9 @@ Please analyze this US investment portfolio. Comment on diversification, retirem
   }
 
   return (
-    <div className="p-6 space-y-6 max-w-5xl mx-auto">
+    <div className="p-4 md:p-6 space-y-5 max-w-5xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
             <DollarSign className="w-7 h-7 text-blue-500" /> US Accounts
@@ -70,7 +70,7 @@ Please analyze this US investment portfolio. Comment on diversification, retirem
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: 'Retirement', value: retirementTotal, icon: PiggyBank, colorBg: 'bg-blue-100', colorIcon: 'text-blue-600' },
           { label: 'Stocks', value: stocksTotal, icon: TrendingUp, colorBg: 'bg-green-100', colorIcon: 'text-green-600' },
@@ -98,7 +98,7 @@ Please analyze this US investment portfolio. Comment on diversification, retirem
           <span className="text-xs text-emerald-500 font-medium">What you can actually access today</span>
         </div>
 
-        <div className="grid grid-cols-4 gap-3 mb-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
           <div className="bg-white rounded-lg p-3 border border-emerald-100">
             <p className="text-xs text-slate-400 mb-0.5">Cash</p>
             <p className="text-base font-bold text-emerald-700">{formatCurrency(liquidity.cashLiquid)}</p>
@@ -125,7 +125,7 @@ Please analyze this US investment portfolio. Comment on diversification, retirem
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="flex items-start gap-1.5">
             <Info className="w-3.5 h-3.5 text-emerald-400 flex-shrink-0 mt-0.5" />
             <p className="text-xs text-emerald-600">
