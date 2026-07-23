@@ -7,7 +7,7 @@ import {
 } from 'recharts';
 import { Wallet, TrendingUp, TrendingDown, Home, PiggyBank, Plus, Trash2 } from 'lucide-react';
 
-const inputCls = "w-full bg-transparent text-slate-700 text-sm border-0 border-b border-transparent focus:border-indigo-300 focus:outline-none py-0.5";
+const inputCls = "w-full bg-transparent text-slate-700 dark:text-slate-200 text-sm border-0 border-b border-transparent focus:border-indigo-300 focus:outline-none py-0.5";
 
 function AmountRow({ row, onLabelChange, onAmountChange, onDelete }: {
   row: { id: string; label: string; amount: number };
