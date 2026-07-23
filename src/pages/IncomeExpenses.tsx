@@ -371,21 +371,29 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
               </button>
             </div>
           </div>
-          <div className="p-3 space-y-2">
-            {snapshot.oneTimeIncome.length === 0 && <p className="text-xs text-slate-300 text-center py-2">No one-time income</p>}
-            {snapshot.oneTimeIncome.map(row => (
-              <div key={row.id} className="flex items-center gap-2 group">
-                <input value={row.label} onChange={e => onUpdate({ oneTimeIncome: updateField(snapshot.oneTimeIncome, row.id, 'label', e.target.value) })}
-                  className="flex-1 text-xs border border-slate-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-300" />
-                <input type="number" value={row.amount} onChange={e => onUpdate({ oneTimeIncome: updateField(snapshot.oneTimeIncome, row.id, 'amount', parseFloat(e.target.value)||0) })}
-                  className="w-24 text-xs border border-slate-200 rounded px-2 py-1 text-right focus:outline-none focus:ring-1 focus:ring-indigo-300" min={0} />
-                <button onClick={() => onUpdate({ oneTimeIncome: snapshot.oneTimeIncome.filter(e => e.id !== row.id) })}
-                  className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all">
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ))}
-          </div>
+          <table className="w-full text-sm min-w-[320px]">
+            <thead>
+              <tr className="border-b border-slate-100">
+                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400">Description</th>
+                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400">Amount</th>
+                <th className="py-2 px-1 w-8" />
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {snapshot.oneTimeIncome.length === 0 && (
+                <tr><td colSpan={3} className="text-xs text-slate-300 text-center py-4">No one-time income</td></tr>
+              )}
+              {snapshot.oneTimeIncome.map(row => (
+                <AmountRow
+                  key={row.id}
+                  row={row}
+                  onLabelChange={v => onUpdate({ oneTimeIncome: updateField(snapshot.oneTimeIncome, row.id, 'label', v) })}
+                  onAmountChange={v => onUpdate({ oneTimeIncome: updateField(snapshot.oneTimeIncome, row.id, 'amount', v) })}
+                  onDelete={() => onUpdate({ oneTimeIncome: snapshot.oneTimeIncome.filter(e => e.id !== row.id) })}
+                />
+              ))}
+            </tbody>
+          </table>
         </div>
 
         <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
@@ -403,21 +411,29 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
               </button>
             </div>
           </div>
-          <div className="p-3 space-y-2">
-            {snapshot.oneTimeExpenses.length === 0 && <p className="text-xs text-slate-300 text-center py-2">No one-time expenses</p>}
-            {snapshot.oneTimeExpenses.map(row => (
-              <div key={row.id} className="flex items-center gap-2 group">
-                <input value={row.label} onChange={e => onUpdate({ oneTimeExpenses: updateField(snapshot.oneTimeExpenses, row.id, 'label', e.target.value) })}
-                  className="flex-1 text-xs border border-slate-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-indigo-300" />
-                <input type="number" value={row.amount} onChange={e => onUpdate({ oneTimeExpenses: updateField(snapshot.oneTimeExpenses, row.id, 'amount', parseFloat(e.target.value)||0) })}
-                  className="w-24 text-xs border border-slate-200 rounded px-2 py-1 text-right focus:outline-none focus:ring-1 focus:ring-indigo-300" min={0} />
-                <button onClick={() => onUpdate({ oneTimeExpenses: snapshot.oneTimeExpenses.filter(e => e.id !== row.id) })}
-                  className="opacity-0 group-hover:opacity-100 text-slate-300 hover:text-red-500 transition-all">
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
-            ))}
-          </div>
+          <table className="w-full text-sm min-w-[320px]">
+            <thead>
+              <tr className="border-b border-slate-100">
+                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400">Description</th>
+                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400">Amount</th>
+                <th className="py-2 px-1 w-8" />
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-50">
+              {snapshot.oneTimeExpenses.length === 0 && (
+                <tr><td colSpan={3} className="text-xs text-slate-300 text-center py-4">No one-time expenses</td></tr>
+              )}
+              {snapshot.oneTimeExpenses.map(row => (
+                <AmountRow
+                  key={row.id}
+                  row={row}
+                  onLabelChange={v => onUpdate({ oneTimeExpenses: updateField(snapshot.oneTimeExpenses, row.id, 'label', v) })}
+                  onAmountChange={v => onUpdate({ oneTimeExpenses: updateField(snapshot.oneTimeExpenses, row.id, 'amount', v) })}
+                  onDelete={() => onUpdate({ oneTimeExpenses: snapshot.oneTimeExpenses.filter(e => e.id !== row.id) })}
+                />
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
 
