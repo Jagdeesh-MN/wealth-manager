@@ -16,7 +16,7 @@ function AmountRow({ row, onLabelChange, onAmountChange, onDelete }: {
   onDelete: () => void;
 }) {
   return (
-    <tr className="group hover:bg-slate-50 transition-colors">
+    <tr className="group hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
       <td className="py-2 px-3">
         <input value={row.label} onChange={e => onLabelChange(e.target.value)} className={inputCls} />
       </td>
@@ -101,10 +101,10 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
-          <h2 className="text-2xl font-bold text-slate-800 flex items-center gap-2">
+          <h2 className="text-2xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
             <Wallet className="w-7 h-7 text-purple-500" /> Income & Expenses
           </h2>
-          <p className="text-sm text-slate-400 mt-0.5">Monthly cash flow and savings</p>
+          <p className="text-sm text-slate-400 dark:text-slate-500 mt-0.5">Monthly cash flow and savings</p>
         </div>
       </div>
 
@@ -135,8 +135,8 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
 
       {/* Trend Chart */}
       {allSnapshots.length > 1 && (
-        <div className="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-          <h3 className="text-sm font-semibold text-slate-700 mb-4">Monthly Cash Flow Trend</h3>
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm">
+          <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-4">Monthly Cash Flow Trend</h3>
           <ResponsiveContainer width="100%" height={200}>
             <BarChart data={trendData} margin={{ top: 5, right: 10, left: 10, bottom: 5 }}>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
@@ -157,11 +157,11 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
       )}
 
       {/* Income Section */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-x-auto">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50">
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-green-500" />
-            <h3 className="text-sm font-semibold text-slate-700">Monthly Income</h3>
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Monthly Income</h3>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-sm font-bold text-green-600">{fmt(totalIncome)}</span>
@@ -174,13 +174,13 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
         <div className="px-2 py-2">
           <table className="w-full text-sm min-w-[320px]">
             <thead>
-              <tr className="border-b border-slate-100">
-                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400">Source</th>
-                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400">Monthly Amount</th>
+              <tr className="border-b border-slate-700/50">
+                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400 dark:text-slate-500">Source</th>
+                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400 dark:text-slate-500">Monthly Amount</th>
                 <th className="w-8" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-slate-800/30">
               {snapshot.incomes.map(row => (
                 <AmountRow
                   key={row.id} row={row}
@@ -191,8 +191,8 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t border-slate-200 bg-slate-50">
-                <td className="py-2 px-3 text-xs font-semibold text-slate-600">Total Income</td>
+              <tr className="border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                <td className="py-2 px-3 text-xs font-semibold text-slate-600 dark:text-slate-300">Total Income</td>
                 <td className="py-2 px-3 text-right text-sm font-bold text-green-600">{fmt(totalIncome)}</td>
                 <td />
               </tr>
@@ -202,11 +202,11 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
       </div>
 
       {/* Personal Expenses */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-x-auto">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50">
           <div className="flex items-center gap-2">
             <TrendingDown className="w-4 h-4 text-red-500" />
-            <h3 className="text-sm font-semibold text-slate-700">Personal Expenses</h3>
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Personal Expenses</h3>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-sm font-bold text-red-600">{fmt(totalPersonal)}</span>
@@ -219,13 +219,13 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
         <div className="px-2 py-2">
           <table className="w-full text-sm min-w-[320px]">
             <thead>
-              <tr className="border-b border-slate-100">
-                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400">Expense</th>
-                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400">Monthly Amount</th>
+              <tr className="border-b border-slate-700/50">
+                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400 dark:text-slate-500">Expense</th>
+                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400 dark:text-slate-500">Monthly Amount</th>
                 <th className="w-8" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-slate-800/30">
               {snapshot.personalExpenses.map(row => (
                 <AmountRow
                   key={row.id} row={row}
@@ -236,8 +236,8 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t border-slate-200 bg-slate-50">
-                <td className="py-2 px-3 text-xs font-semibold text-slate-600">Total Personal</td>
+              <tr className="border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                <td className="py-2 px-3 text-xs font-semibold text-slate-600 dark:text-slate-300">Total Personal</td>
                 <td className="py-2 px-3 text-right text-sm font-bold text-red-600">{fmt(totalPersonal)}</td>
                 <td />
               </tr>
@@ -247,11 +247,11 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
       </div>
 
       {/* Rental Property Expenses */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-x-auto">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50">
           <div className="flex items-center gap-2">
             <Home className="w-4 h-4 text-orange-500" />
-            <h3 className="text-sm font-semibold text-slate-700">Rental Property Expenses</h3>
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Rental Property Expenses</h3>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-sm font-bold text-orange-600">{fmt(totalRental)}</span>
@@ -264,13 +264,13 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
         <div className="px-2 py-2">
           <table className="w-full text-sm min-w-[320px]">
             <thead>
-              <tr className="border-b border-slate-100">
-                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400">Expense</th>
-                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400">Monthly Amount</th>
+              <tr className="border-b border-slate-700/50">
+                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400 dark:text-slate-500">Expense</th>
+                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400 dark:text-slate-500">Monthly Amount</th>
                 <th className="w-8" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-slate-800/30">
               {snapshot.rentalExpenses.map(row => (
                 <AmountRow
                   key={row.id} row={row}
@@ -281,8 +281,8 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t border-slate-200 bg-slate-50">
-                <td className="py-2 px-3 text-xs font-semibold text-slate-600">Total Rental Expenses</td>
+              <tr className="border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                <td className="py-2 px-3 text-xs font-semibold text-slate-600 dark:text-slate-300">Total Rental Expenses</td>
                 <td className="py-2 px-3 text-right text-sm font-bold text-orange-600">{fmt(totalRental)}</td>
                 <td />
               </tr>
@@ -292,11 +292,11 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
       </div>
 
       {/* Savings */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
-        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+      <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-x-auto">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50">
           <div className="flex items-center gap-2">
             <PiggyBank className="w-4 h-4 text-blue-500" />
-            <h3 className="text-sm font-semibold text-slate-700">Monthly Savings</h3>
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">Monthly Savings</h3>
           </div>
           <div className="flex items-center gap-3">
             <span className="text-sm font-bold text-blue-600">{fmt(totalSavings)}</span>
@@ -309,13 +309,13 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
         <div className="px-2 py-2">
           <table className="w-full text-sm min-w-[320px]">
             <thead>
-              <tr className="border-b border-slate-100">
-                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400">Savings Vehicle</th>
-                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400">Monthly Amount</th>
+              <tr className="border-b border-slate-700/50">
+                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400 dark:text-slate-500">Savings Vehicle</th>
+                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400 dark:text-slate-500">Monthly Amount</th>
                 <th className="w-8" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-slate-800/30">
               {snapshot.savings.map(row => (
                 <AmountRow
                   key={row.id} row={row}
@@ -326,8 +326,8 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
               ))}
             </tbody>
             <tfoot>
-              <tr className="border-t border-slate-200 bg-slate-50">
-                <td className="py-2 px-3 text-xs font-semibold text-slate-600">Total Savings</td>
+              <tr className="border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
+                <td className="py-2 px-3 text-xs font-semibold text-slate-600 dark:text-slate-300">Total Savings</td>
                 <td className="py-2 px-3 text-right text-sm font-bold text-blue-600">{fmt(totalSavings)}</td>
                 <td />
               </tr>
@@ -340,14 +340,14 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
       <div className={`rounded-xl p-5 border ${netBalance >= 0 ? 'bg-green-50 border-green-200' : 'bg-red-50 border-red-200'}`}>
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div>
-            <p className="text-sm font-semibold text-slate-600">Monthly Net Balance</p>
-            <p className="text-xs text-slate-400 mt-0.5">Income − Expenses</p>
+            <p className="text-sm font-semibold text-slate-600 dark:text-slate-300">Monthly Net Balance</p>
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">Income − Expenses</p>
           </div>
           <div className="text-right">
             <p className={`text-3xl font-bold ${netBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>
               {netBalance >= 0 ? '+' : ''}{fmt(netBalance)}
             </p>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-400 dark:text-slate-500 mt-0.5">
               {fmt(totalIncome)} - {fmt(totalExpenses)}
             </p>
           </div>
@@ -356,9 +356,9 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
 
       {/* One-Time Items */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-            <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-x-auto">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50">
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2">
               <TrendingUp className="w-4 h-4 text-green-500" /> One-Time Income
             </h3>
             <div className="flex items-center gap-2">
@@ -373,13 +373,13 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
           </div>
           <table className="w-full text-sm min-w-[320px]">
             <thead>
-              <tr className="border-b border-slate-100">
-                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400">Description</th>
-                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400">Amount</th>
+              <tr className="border-b border-slate-700/50">
+                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400 dark:text-slate-500">Description</th>
+                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400 dark:text-slate-500">Amount</th>
                 <th className="py-2 px-1 w-8" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-slate-800/30">
               {snapshot.oneTimeIncome.length === 0 && (
                 <tr><td colSpan={3} className="text-xs text-slate-300 text-center py-4">No one-time income</td></tr>
               )}
@@ -396,9 +396,9 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
           </table>
         </div>
 
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
-          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-100">
-            <h3 className="text-sm font-semibold text-slate-700 flex items-center gap-2">
+        <div className="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-x-auto">
+          <div className="flex items-center justify-between px-5 py-4 border-b border-slate-700/50">
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2">
               <TrendingDown className="w-4 h-4 text-red-500" /> One-Time Expenses
             </h3>
             <div className="flex items-center gap-2">
@@ -413,13 +413,13 @@ Analyze the income vs expense balance, savings rate adequacy (25% is ideal), exp
           </div>
           <table className="w-full text-sm min-w-[320px]">
             <thead>
-              <tr className="border-b border-slate-100">
-                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400">Description</th>
-                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400">Amount</th>
+              <tr className="border-b border-slate-700/50">
+                <th className="py-2 px-3 text-left text-xs font-medium text-slate-400 dark:text-slate-500">Description</th>
+                <th className="py-2 px-3 text-right text-xs font-medium text-slate-400 dark:text-slate-500">Amount</th>
                 <th className="py-2 px-1 w-8" />
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-50">
+            <tbody className="divide-y divide-slate-800/30">
               {snapshot.oneTimeExpenses.length === 0 && (
                 <tr><td colSpan={3} className="text-xs text-slate-300 text-center py-4">No one-time expenses</td></tr>
               )}
