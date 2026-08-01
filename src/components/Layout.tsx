@@ -4,7 +4,7 @@ import { formatCurrency } from '../lib/storage';
 import {
   LayoutDashboard, TrendingUp, Globe, DollarSign,
   PlusCircle, Trash2, ChevronDown, IndianRupee, Wallet,
-  Sun, Moon, Download, Menu, X
+  Sun, Moon, Download, Menu, X, CheckCircle, Loader, AlertCircle
 } from 'lucide-react';
 
 type Page = 'us' | 'india' | 'consolidated' | 'income';
@@ -20,6 +20,7 @@ interface Props {
   onSelectSnapshot: (id: string) => void;
   dark: boolean;
   onToggleDark: () => void;
+  saveStatus: 'saved' | 'saving' | 'error';
 }
 
 const navItems = [
@@ -31,7 +32,7 @@ const navItems = [
 
 export function Layout({
   children, currentPage, onNavigate, snapshots, activeSnapshot,
-  onCreateSnapshot, onDeleteSnapshot, onSelectSnapshot, dark, onToggleDark
+  onCreateSnapshot, onDeleteSnapshot, onSelectSnapshot, dark, onToggleDark, saveStatus
 }: Props) {
   const [snapshotOpen, setSnapshotOpen] = useState(false);
   const [newLabel, setNewLabel] = useState('');
@@ -103,7 +104,14 @@ export function Layout({
       <div className="mx-3 mt-3 p-3 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950 dark:to-purple-950 rounded-xl border border-indigo-100 dark:border-indigo-900">
         <p className="text-xs text-indigo-500 dark:text-indigo-400 font-medium">Total Net Worth</p>
         <p className="text-xl font-bold text-indigo-700 dark:text-indigo-300 mt-0.5">{formatCurrency(netWorth)}</p>
-        <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">{activeSnapshot.label}</p>
+        <div className="flex items-center justify-between mt-1">
+          <p className="text-xs text-slate-400 dark:text-slate-500">{activeSnapshot.label}</p>
+          <span className="flex items-center gap-1 text-xs">
+            {saveStatus === 'saving' && <><Loader className="w-3 h-3 text-indigo-400 animate-spin" /><span className="text-indigo-400">Saving…</span></>}
+            {saveStatus === 'saved'  && <><CheckCircle className="w-3 h-3 text-emerald-500" /><span className="text-emerald-500">Saved</span></>}
+            {saveStatus === 'error'  && <><AlertCircle className="w-3 h-3 text-red-500" /><span className="text-red-500">Save failed</span></>}
+          </span>
+        </div>
       </div>
 
       {/* Navigation */}

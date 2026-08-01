@@ -2,6 +2,8 @@ import type { AppState, Snapshot } from './types';
 import { DEFAULT_SNAPSHOT } from './types';
 import { loadFromGist, saveToGist } from './gist';
 
+const LS_KEY = 'wt_data_v2';
+
 function getInitialState(): AppState {
   const id = generateId();
   const snapshot: Snapshot = {
@@ -13,75 +15,103 @@ function getInitialState(): AppState {
   return { snapshots: [snapshot], activeSnapshotId: id };
 }
 
+function lsRead(): AppState | null {
+  try {
+    const raw = localStorage.getItem(LS_KEY)
+      || localStorage.getItem('wealth_manager_v1'); // legacy key
+    return raw ? JSON.parse(raw) as AppState : null;
+  } catch { return null; }
+}
+
+function lsWrite(state: AppState): void {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+  } catch { /* storage full — ignore */ }
+}
+
 export async function loadState(): Promise<AppState> {
-  // Gist path — used in production when env vars are baked into the build
   if (import.meta.env.VITE_GIST_ID) {
+    // Always read localStorage first — it's the fastest and most reliable
+    const local = lsRead();
+
     try {
-      const data = await loadFromGist();
-      if (data.snapshots.length === 0) {
-        const raw = localStorage.getItem('wealth_manager_v1');
-        if (raw) {
-          const migrated = JSON.parse(raw) as AppState;
-          saveToGist(migrated);
-          localStorage.removeItem('wealth_manager_v1');
-          return migrated;
-        }
+      const remote = await loadFromGist();
+      // Prefer whichever has more snapshots or more recent data
+      const useRemote = !local
+        || remote.snapshots.length > local.snapshots.length
+        || (remote.snapshots.length === local.snapshots.length
+            && remote.snapshots.some((rs, i) => {
+              const ls = local.snapshots[i];
+              // Compare total amounts to detect which is newer
+              const remoteSum = Object.values(rs).flat().reduce((s: number, e: unknown) =>
+                s + (typeof e === 'object' && e !== null ? (e as Record<string, number>).amount ?? 0 : 0), 0);
+              const localSum = Object.values(ls).flat().reduce((s: number, e: unknown) =>
+                s + (typeof e === 'object' && e !== null ? (e as Record<string, number>).amount ?? 0 : 0), 0);
+              return remoteSum > localSum;
+            }));
+
+      const best = useRemote ? remote : (local ?? remote);
+
+      if (best.snapshots.length === 0) {
         const initial = getInitialState();
+        lsWrite(initial);
         saveToGist(initial);
         return initial;
       }
-      const raw = localStorage.getItem('wealth_manager_v1');
-      if (raw) localStorage.removeItem('wealth_manager_v1');
-      return data;
+
+      // Keep localStorage in sync with whatever we loaded
+      lsWrite(best);
+      // Clean up legacy key
+      localStorage.removeItem('wealth_manager_v1');
+      return best;
     } catch (err) {
-      console.error('Gist load failed, falling back to localStorage:', err);
-      const raw = localStorage.getItem('wealth_manager_v1');
-      if (raw) return JSON.parse(raw) as AppState;
-      return getInitialState();
+      console.error('Gist load failed, using localStorage:', err);
+      if (local && local.snapshots.length > 0) return local;
+      const initial = getInitialState();
+      lsWrite(initial);
+      return initial;
     }
   }
 
-  // Express path — used during local dev when VITE_GIST_ID is not set
+  // Local Express dev path
   try {
     const res = await fetch('/api/state');
     if (!res.ok) throw new Error('Server unreachable');
     const data: AppState = await res.json();
     if (data.snapshots.length === 0) {
-      const raw = localStorage.getItem('wealth_manager_v1');
-      if (raw) {
-        const migrated = JSON.parse(raw) as AppState;
-        await saveState(migrated);
+      const local = lsRead();
+      if (local) {
+        await saveState(local);
         localStorage.removeItem('wealth_manager_v1');
-        return migrated;
+        return local;
       }
       const initial = getInitialState();
       await saveState(initial);
       return initial;
     }
-    const raw = localStorage.getItem('wealth_manager_v1');
-    if (raw) localStorage.removeItem('wealth_manager_v1');
     return data;
   } catch {
-    const raw = localStorage.getItem('wealth_manager_v1');
-    if (raw) return JSON.parse(raw) as AppState;
-    return getInitialState();
+    const local = lsRead();
+    return local ?? getInitialState();
   }
 }
 
 export async function saveState(state: AppState): Promise<void> {
+  // Always write to localStorage immediately — never loses data
+  lsWrite(state);
+
   if (import.meta.env.VITE_GIST_ID) {
-    saveToGist(state);
+    saveToGist(state); // debounced background sync to Gist
     return;
   }
+
   try {
     await fetch('/api/state', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(state),
     });
-  } catch {
-    localStorage.setItem('wealth_manager_v1', JSON.stringify(state));
-  }
+  } catch { /* already written to localStorage above */ }
 }
 
 export function generateId(): string {

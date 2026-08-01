@@ -17,6 +17,7 @@ function App() {
   const {
     state,
     activeSnapshot,
+    saveStatus,
     updateSnapshot,
     createSnapshot,
     deleteSnapshot,
@@ -46,6 +47,7 @@ function App() {
         onSelectSnapshot={setActiveSnapshot}
         dark={dark}
         onToggleDark={toggle}
+        saveStatus={saveStatus}
       >
         {page === 'us' && (
           <USAccounts

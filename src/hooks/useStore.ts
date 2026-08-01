@@ -5,6 +5,7 @@ import { loadState, saveState, generateId } from '../lib/storage';
 
 function useStore() {
   const [state, setState] = useState<AppState | null>(null);
+  const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'error'>('saved');
 
   useEffect(() => {
     loadState().then(setState);
@@ -12,7 +13,10 @@ function useStore() {
 
   const persist = useCallback((next: AppState) => {
     setState(next);
-    saveState(next);
+    setSaveStatus('saving');
+    saveState(next)
+      .then(() => setSaveStatus('saved'))
+      .catch(() => setSaveStatus('error'));
   }, []);
 
   const activeSnapshot = state
@@ -79,6 +83,7 @@ function useStore() {
   return {
     state,
     activeSnapshot,
+    saveStatus,
     updateSnapshot,
     createSnapshot,
     deleteSnapshot,
