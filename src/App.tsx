@@ -18,6 +18,7 @@ function App() {
     state,
     activeSnapshot,
     saveStatus,
+    saveSnapshot,
     updateSnapshot,
     createSnapshot,
     deleteSnapshot,
@@ -45,6 +46,7 @@ function App() {
         onCreateSnapshot={createSnapshot}
         onDeleteSnapshot={deleteSnapshot}
         onSelectSnapshot={setActiveSnapshot}
+        onSaveSnapshot={saveSnapshot}
         dark={dark}
         onToggleDark={toggle}
         saveStatus={saveStatus}

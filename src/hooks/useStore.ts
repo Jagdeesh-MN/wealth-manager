@@ -80,10 +80,36 @@ function useStore() {
     persist(next);
   }, [state, persist]);
 
+  const saveSnapshot = useCallback(() => {
+    if (!state || !activeSnapshot) return;
+    const today = new Date().toISOString().split('T')[0];
+    const existing = state.snapshots.find(s => s.date === today);
+    let next: AppState;
+    if (existing) {
+      // Overwrite today's snapshot with current data
+      next = {
+        ...state,
+        snapshots: state.snapshots.map(s =>
+          s.date === today ? { ...activeSnapshot, id: s.id, date: today, label: s.label } : s
+        ),
+        activeSnapshotId: existing.id,
+      };
+    } else {
+      // Create a new snapshot for today
+      const newId = generateId();
+      next = {
+        snapshots: [...state.snapshots, { ...activeSnapshot, id: newId, date: today, label: today }],
+        activeSnapshotId: newId,
+      };
+    }
+    persist(next);
+  }, [state, activeSnapshot, persist]);
+
   return {
     state,
     activeSnapshot,
     saveStatus,
+    saveSnapshot,
     updateSnapshot,
     createSnapshot,
     deleteSnapshot,

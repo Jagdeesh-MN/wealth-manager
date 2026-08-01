@@ -4,7 +4,7 @@ import { formatCurrency } from '../lib/storage';
 import {
   LayoutDashboard, TrendingUp, Globe, DollarSign,
   PlusCircle, Trash2, ChevronDown, IndianRupee, Wallet,
-  Sun, Moon, Download, Menu, X, CheckCircle, Loader, AlertCircle
+  Sun, Moon, Download, Menu, X, CheckCircle, Loader, AlertCircle, Save
 } from 'lucide-react';
 
 type Page = 'us' | 'india' | 'consolidated' | 'income';
@@ -18,6 +18,7 @@ interface Props {
   onCreateSnapshot: (label: string, date: string) => void;
   onDeleteSnapshot: (id: string) => void;
   onSelectSnapshot: (id: string) => void;
+  onSaveSnapshot: () => void;
   dark: boolean;
   onToggleDark: () => void;
   saveStatus: 'saved' | 'saving' | 'error';
@@ -32,7 +33,8 @@ const navItems = [
 
 export function Layout({
   children, currentPage, onNavigate, snapshots, activeSnapshot,
-  onCreateSnapshot, onDeleteSnapshot, onSelectSnapshot, dark, onToggleDark, saveStatus
+  onCreateSnapshot, onDeleteSnapshot, onSelectSnapshot, onSaveSnapshot,
+  dark, onToggleDark, saveStatus
 }: Props) {
   const [snapshotOpen, setSnapshotOpen] = useState(false);
   const [newLabel, setNewLabel] = useState('');
@@ -100,17 +102,23 @@ export function Layout({
         </div>
       </div>
 
-      {/* Net Worth Widget */}
+      {/* Net Worth Widget + Save */}
       <div className="mx-3 mt-3 p-3 bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950 dark:to-purple-950 rounded-xl border border-indigo-100 dark:border-indigo-900">
         <p className="text-xs text-indigo-500 dark:text-indigo-400 font-medium">Total Net Worth</p>
         <p className="text-xl font-bold text-indigo-700 dark:text-indigo-300 mt-0.5">{formatCurrency(netWorth)}</p>
-        <div className="flex items-center justify-between mt-1">
-          <p className="text-xs text-slate-400 dark:text-slate-500">{activeSnapshot.label}</p>
+        <div className="flex items-center justify-between mt-2">
           <span className="flex items-center gap-1 text-xs">
             {saveStatus === 'saving' && <><Loader className="w-3 h-3 text-indigo-400 animate-spin" /><span className="text-indigo-400">Saving…</span></>}
             {saveStatus === 'saved'  && <><CheckCircle className="w-3 h-3 text-emerald-500" /><span className="text-emerald-500">Saved</span></>}
             {saveStatus === 'error'  && <><AlertCircle className="w-3 h-3 text-red-500" /><span className="text-red-500">Save failed</span></>}
           </span>
+          <button
+            onClick={onSaveSnapshot}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition-colors shadow-sm"
+          >
+            <Save className="w-3.5 h-3.5" />
+            Save Today
+          </button>
         </div>
       </div>
 
@@ -264,12 +272,21 @@ export function Layout({
             </div>
             <span className="text-sm font-bold text-slate-800 dark:text-slate-100">WealthTracker</span>
           </div>
-          <button
-            onClick={onToggleDark}
-            className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
-          >
-            {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              onClick={onSaveSnapshot}
+              className="flex items-center gap-1 px-2.5 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold rounded-lg transition-colors"
+            >
+              <Save className="w-3.5 h-3.5" />
+              Save
+            </button>
+            <button
+              onClick={onToggleDark}
+              className="w-8 h-8 flex items-center justify-center rounded-lg text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            >
+              {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+            </button>
+          </div>
         </header>
 
         <main className="flex-1 overflow-auto bg-slate-50 dark:bg-slate-950">
