@@ -14,8 +14,12 @@ export function AddFieldModal({ onAdd, sectionName, extraFieldLabel, extraFieldP
   const [extra, setExtra] = useState('');
 
   const handleAdd = () => {
-    if (!label.trim()) return;
-    onAdd(label.trim(), extraFieldLabel ? extra.trim() : undefined);
+    const trimmedLabel = label.trim();
+    const trimmedExtra = extra.trim();
+    // For sections with an extra field (e.g. Firm), allow the extra field to act as the label
+    const effectiveLabel = trimmedLabel || trimmedExtra;
+    if (!effectiveLabel) return;
+    onAdd(effectiveLabel, extraFieldLabel ? (trimmedExtra || trimmedLabel) : undefined);
     setLabel('');
     setExtra('');
     setOpen(false);
@@ -44,8 +48,8 @@ export function AddFieldModal({ onAdd, sectionName, extraFieldLabel, extraFieldP
         />
       )}
       <input
-        autoFocus
-        placeholder="Label / Name"
+        autoFocus={!extraFieldLabel}
+        placeholder={extraFieldLabel ? 'Account name (optional)' : 'Label / Name'}
         value={label}
         onChange={e => setLabel(e.target.value)}
         onKeyDown={e => e.key === 'Enter' && handleAdd()}
